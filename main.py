@@ -16,10 +16,27 @@ data: dict = {
 }
 
 df: pd.DataFrame = pd.DataFrame(data, index=["Today's Rate", "Average Rate"]).T  # transpose
-html: str = df.to_html(border=1)
 
-with open("exchange_rates.html", "w") as file:
-    file.write(html)
-    
-file_path: str = os.path.abspath("exchange_rates.html")
+html_table = df.to_html(border=1, classes="dataframe")
+
+html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exchange Rates</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h2>Exchange Rates</h2>
+{html_table}
+</body>
+</html>
+"""
+
+html_file = "exchange_rates.html"
+with open(html_file, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+file_path = os.path.abspath(html_file)
 webbrowser.open(f"file://{file_path}")
